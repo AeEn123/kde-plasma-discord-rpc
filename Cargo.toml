@@ -1,0 +1,7 @@
+[package]
+name = "kde_plasma_rpc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+discord-rpc-client = "0.4.0"
