@@ -35,10 +35,15 @@ fn main() {
     // Start up the client connection, so that we can actually send and receive stuff
     drpc.start();
     drpc.block_until_event(discord_presence::Event::Ready).unwrap();
+
     // Set the activity
     drpc.set_activity(|act|
         act.state(format!("{} | {}",distro, kernel_version))
         .details(format!("{} | KWin {} ({})", plasma_version, kwin_version, display_server))
-        .append_buttons(|button| button.label("Click Me!").url("https://google.com/"))
+        //.append_buttons(|button| button.label("Click Me!").url("https://google.com/"))
     ).unwrap();
+
+    loop {
+        sleep(time::Duration::from_secs(1));
+    }
 }
