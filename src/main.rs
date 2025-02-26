@@ -1,5 +1,5 @@
 use std::{thread::sleep, time};
-use discord_presence::Client;
+use discord_rich_presence::{activity::{self, Activity}, DiscordIpc, DiscordIpcClient};
 
 fn main() {
     let kernel_version = std::fs::read_to_string("/proc/sys/kernel/osrelease").unwrap();
@@ -22,27 +22,21 @@ fn main() {
     let distro = distro.iter().find(|&&x| x.contains("PRETTY_NAME")).unwrap();
     let distro = distro.replace("PRETTY_NAME=", "").replace("\"", "");
 
+
+
     let display_server = std::env::var("XDG_SESSION_TYPE").unwrap();
-
     // Create the client
-    let mut drpc = Client::new(1322629749612351538);
-
-    // Register event handlers with the corresponding methods
-    drpc.on_ready(|_ctx| {
-        println!("ready");
-    }).persist();
-
-    // Start up the client connection, so that we can actually send and receive stuff
-    drpc.start();
-    drpc.block_until_event(discord_presence::Event::Ready).unwrap();
+    let mut client = DiscordIpcClient::new("1322629749612351538").unwrap();
+    client.connect().unwrap();
 
     // Set the activity
-    drpc.set_activity(|act|
-        act.state(format!("{} | {}",distro, kernel_version))
-        .details(format!("{} | KWin {} ({})", plasma_version, kwin_version, display_server))
-        //.append_buttons(|button| button.label("Click Me!").url("https://google.com/"))
+    client.set_activity(Activity::new()
+        .state(&format!("{} | {}",distro, kernel_version))
+        .details(&format!("{} | KWin {} ({})", plasma_version, kwin_version, display_server))
+        .buttons(vec![
+            activity::Button::new("Visit KDE", "https://kde.org")
+        ])
     ).unwrap();
-
     loop {
         sleep(time::Duration::from_secs(1));
     }
