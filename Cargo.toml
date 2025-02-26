@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-discord-rpc-client = "0.4.0"
+discord-presence = "1.5.0"
