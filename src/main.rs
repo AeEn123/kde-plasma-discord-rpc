@@ -34,7 +34,8 @@ fn main() {
         .state(&format!("{} | {}",distro, kernel_version))
         .details(&format!("{} | KWin {} ({})", plasma_version, kwin_version, display_server))
         .buttons(vec![
-            activity::Button::new("Visit KDE", "https://kde.org")
+            activity::Button::new("Visit KDE", "https://kde.org"),
+            activity::Button::new("Get this RPC", "https://github.com/MarcelDev/kde-plasma-discord-rpc")
         ])
     ).unwrap();
     loop {
